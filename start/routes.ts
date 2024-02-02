@@ -24,10 +24,10 @@ Route.group(() => {
   Route.get('auth/me', 'AuthController.me')
 }).middleware('auth')
 
-Route.get("/", async () =>{
-    return {
-      ignite: "manager",
-    };
-  }
+Route.get("/", async () => {
+  return {
+    ignite: "manager",
+  };
+}
 );
 
