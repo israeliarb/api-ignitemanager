@@ -1,8 +1,0 @@
-services:
-  - name: web
-    buildCommand: npm ci
-    startCommand: npm run build && npm run start
-    env:
-      - key: NODE_ENV
-        value: production
-    healthCheckPath: "/"
