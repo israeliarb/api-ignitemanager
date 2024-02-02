@@ -4,6 +4,12 @@ import Tag from 'App/Models/Tag'
 import TagValidator from 'App/Validators/TagValidator'
 
 export default class TagsController {
+    public async index({ response }) {
+        const tags = await Tag.all()
+
+        return response.ok(tags)
+    }
+
     public async store({ request, response }: HttpContextContract) {
         const payload = await request.validate(TagValidator)
 
@@ -11,6 +17,13 @@ export default class TagsController {
             name: payload.name,
             active: payload.active
         })
+
+        return response.ok(tag)
+    }
+
+    public async show({ auth, params, response}) {
+        const userAuth =  await auth.use('api').authenticate()
+        const tag = await Tag.find(params.id)
 
         return response.ok(tag)
     }

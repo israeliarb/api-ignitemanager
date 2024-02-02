@@ -4,6 +4,12 @@ import User from 'App/Models/User'
 import UserValidator from 'App/Validators/UserValidator'
 
 export default class UsersController {
+    public async index({ response }) {
+        const users = await User.all()
+
+        return response.ok(users)
+    }
+
     public async store({ request, response }: HttpContextContract) {
         const payload = await request.validate(UserValidator)
 
@@ -20,6 +26,13 @@ export default class UsersController {
             email: user.email,
             type: user.type,
         })
+    }
+
+    public async show({ auth, params, response}) {
+        const userAuth =  await auth.use('api').authenticate()
+        const user = await User.find(params.id)
+
+        return response.ok(user)
     }
 
     public async update({ auth, request, response}: HttpContextContract) {
@@ -61,5 +74,24 @@ export default class UsersController {
             await transaction.rollback()
             return response.badRequest("Algo deu errado")
         }
+    }
+
+    public async destroy({ auth, params, response }) {
+        const userAuth =  await auth.use('api').authenticate()
+        const user = await User.find(params.id)
+
+        const  transaction = await Database.transaction()
+
+        try {
+            await user?.delete()
+
+            await transaction.commit()
+
+            return response.ok({ message: 'Usuário removido com sucesso'})
+        } catch (error) {
+            await transaction.rollback()
+            return response.badRequest("Algo deu errado")
+        }
+
     }
 }
