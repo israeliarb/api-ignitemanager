@@ -1,0 +1,28 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules
+    ports:
+      - 3333:3333
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ignitemanager_db
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3307:3306
+
+volumes:
+  mysql-data:
