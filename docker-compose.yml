@@ -12,17 +12,17 @@ services:
     depends_on:
       - db
     environment:
-      MYSQL_HOST: db
+      PG_HOST: db
   db:
-    image: mysql
+    image: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: ignitemanager_db
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ignitemanager_db
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql
     ports:
-      - 3307:3306
+      - 5432:5432
 
 volumes:
-  mysql-data:
+  postgres-data:
