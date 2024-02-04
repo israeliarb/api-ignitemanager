@@ -13,6 +13,7 @@ services:
       - db
     environment:
       PG_HOST: db
+    cpus: 0.5
   db:
     image: postgres
     restart: always
