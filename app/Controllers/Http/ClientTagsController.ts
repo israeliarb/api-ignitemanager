@@ -16,7 +16,7 @@ export default class ClientTagsController {
             tag_id: schema.number()
         })
 
-        const payload = await request.validate({ schema: clientTagSchema})
+        const payload = await request.validate({ schema: clientTagSchema })
 
         const clientTag = await ClientTag.create(payload)
 
@@ -27,8 +27,8 @@ export default class ClientTagsController {
         })
     }
 
-    public async show({ auth, params, response}) {
-        const userAuth =  await auth.use('api').authenticate()
+    public async show({ auth, params, response }) {
+        const userAuth = await auth.use('api').authenticate()
         const clientTag = await ClientTag.find(params.id)
 
         return response.ok({
@@ -39,7 +39,7 @@ export default class ClientTagsController {
     }
 
     public async destroy({ auth, params, response }: HttpContextContract) {
-        const userAuth =  await auth.use('api').authenticate()
+        const userAuth = await auth.use('api').authenticate()
         const clientTag = await ClientTag.find(params.id)
 
         const transaction = await Database.transaction()
@@ -49,7 +49,7 @@ export default class ClientTagsController {
 
             await transaction.commit()
 
-            return response.ok({ message: 'Tag removido com sucesso'})
+            return response.ok({ message: 'Tag removido com sucesso' })
         } catch (error) {
             await transaction.rollback()
             return response.badRequest("Algo deu errado")
